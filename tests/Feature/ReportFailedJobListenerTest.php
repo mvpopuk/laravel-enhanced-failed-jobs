@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Queue\Events\JobFailed;
-use Illuminate\Queue\Jobs\SyncJob;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
 use Mvpopuk\LaravelEnhancedFailedJobs\Jobs\SendFailureReport;
@@ -27,7 +26,7 @@ describe('ReportFailedJob Listener', function () {
         $job = createMockJob(SendFailureReport::class);
         $event = new JobFailed('sync', $job, new Exception('Test exception'));
 
-        $listener = new ReportFailedJob();
+        $listener = new ReportFailedJob;
         $listener->handle($event);
 
         Queue::assertNothingPushed();
@@ -42,7 +41,7 @@ describe('ReportFailedJob Listener', function () {
         $job = createMockJob('App\\Jobs\\TestJob');
         $event = new JobFailed('sync', $job, new Exception('Test exception'));
 
-        $listener = new ReportFailedJob();
+        $listener = new ReportFailedJob;
         $listener->handle($event);
 
         Http::assertSent(function ($request) {
@@ -59,7 +58,7 @@ describe('ReportFailedJob Listener', function () {
         $job = createMockJob('App\\Jobs\\TestJob');
         $event = new JobFailed('sync', $job, new Exception('Test exception'));
 
-        $listener = new ReportFailedJob();
+        $listener = new ReportFailedJob;
         $listener->handle($event);
 
         Queue::assertNothingPushed();
@@ -75,7 +74,7 @@ describe('ReportFailedJob Listener', function () {
         $job = createMockJob('App\\Jobs\\TestJob');
         $event = new JobFailed('sync', $job, new Exception('Test exception'));
 
-        $listener = new ReportFailedJob();
+        $listener = new ReportFailedJob;
         $listener->handle($event);
 
         Queue::assertNothingPushed();
@@ -91,7 +90,7 @@ describe('ReportFailedJob Listener', function () {
         $job = createMockJob('App\\Jobs\\IgnoredJob');
         $event = new JobFailed('sync', $job, new Exception('Test exception'));
 
-        $listener = new ReportFailedJob();
+        $listener = new ReportFailedJob;
         $listener->handle($event);
 
         Queue::assertNothingPushed();
@@ -107,7 +106,7 @@ describe('ReportFailedJob Listener', function () {
         $job = createMockJob('App\\Jobs\\TestJob', 'low-priority');
         $event = new JobFailed('sync', $job, new Exception('Test exception'));
 
-        $listener = new ReportFailedJob();
+        $listener = new ReportFailedJob;
         $listener->handle($event);
 
         Queue::assertNothingPushed();
@@ -123,7 +122,7 @@ describe('ReportFailedJob Listener', function () {
         $job = createMockJob('App\\Jobs\\TestJob');
         $event = new JobFailed('sync', $job, new RuntimeException('Test exception'));
 
-        $listener = new ReportFailedJob();
+        $listener = new ReportFailedJob;
         $listener->handle($event);
 
         Queue::assertNothingPushed();
@@ -142,7 +141,7 @@ function createMockJob(string $jobClass, string $queue = 'default'): object
         'job' => $jobClass,
         'maxTries' => 3,
         'timeout' => null,
-        'data' => ['command' => serialize(new stdClass())],
+        'data' => ['command' => serialize(new stdClass)],
     ];
 
     $mock = Mockery::mock('Illuminate\Contracts\Queue\Job');
