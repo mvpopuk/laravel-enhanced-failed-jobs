@@ -114,8 +114,10 @@ class ReportFailedJob
         try {
             $payload = $job->payload();
 
-            // Remove sensitive data
-            unset($payload['data']['command']); // Serialized command might contain sensitive data
+            // Remove serialized command unless retry is enabled (retry needs the command to reconstruct the job)
+            if (! config('queuewatch.retry.enabled', false)) {
+                unset($payload['data']['command']);
+            }
 
             return $payload;
         } catch (\Throwable $e) {
