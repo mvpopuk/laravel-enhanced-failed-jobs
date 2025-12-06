@@ -4,9 +4,74 @@
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/queuewatch/laravel/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/queuewatch/laravel/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/queuewatch/laravel.svg?style=flat-square)](https://packagist.org/packages/queuewatch/laravel)
 
-Official Laravel package for [Queuewatch](https://queuewatch.io) - Real-time queue failure monitoring with instant notifications.
+## Enhanced CLI
 
-## Features
+## Installation
+
+```bash
+composer require queuewatch/laravel
+```
+
+### Basic Commands
+
+```bash
+# List all failed jobs (table format)
+php artisan queue:failed
+
+# Output as JSON
+php artisan queue:failed --json
+```
+
+### Filtering Options
+
+```bash
+# Filter by queue name
+php artisan queue:failed --queue=emails
+
+# Filter by connection
+php artisan queue:failed --connection=redis
+
+# Filter by date range
+php artisan queue:failed --after="2025-11-20"
+php artisan queue:failed --before="2025-11-21"
+php artisan queue:failed --after=yesterday --before=today
+
+# Filter by job class (partial match)
+php artisan queue:failed --class=SendEmail
+
+# Limit results
+php artisan queue:failed --limit=50
+
+# Combine multiple filters
+php artisan queue:failed --queue=emails --after=yesterday --limit=10 --json
+```
+
+### JSON Output Format
+
+```json
+{
+  "failed_jobs": [
+    {
+      "id": "1234",
+      "uuid": "550e8400-e29b-41d4-a716-446655440000",
+      "connection": "redis",
+      "queue": "emails",
+      "payload": {
+        "displayName": "App\\Jobs\\SendEmail",
+        "job": "Illuminate\\Queue\\CallQueuedHandler@call",
+        "data": {}
+      },
+      "exception": "Connection timeout...",
+      "failed_at": "2025-11-21 10:30:00"
+    }
+  ],
+  "count": 1
+}
+```
+
+## [Queuewatch.io](https://queuewatch.io) (Optional)
+
+Official Laravel package for [Queuewatch](https://queuewatch.io) - Real-time queue failure monitoring with instant notifications.
 
 - **Real-time Failure Reporting** - Automatically capture and report queue job failures to your Queuewatch dashboard
 - **Rich Exception Data** - Full stack traces, job payloads, and server context
@@ -110,65 +175,6 @@ When a job fails, Queuewatch captures:
 - **Payload** - Complete job payload (can be disabled for sensitive data)
 - **Context** - Server hostname, PHP version, Laravel version, timestamp
 - **Environment** - Your configured environment label
-
-## Enhanced CLI
-
-### Basic Commands
-
-```bash
-# List all failed jobs (table format)
-php artisan queue:failed
-
-# Output as JSON
-php artisan queue:failed --json
-```
-
-### Filtering Options
-
-```bash
-# Filter by queue name
-php artisan queue:failed --queue=emails
-
-# Filter by connection
-php artisan queue:failed --connection=redis
-
-# Filter by date range
-php artisan queue:failed --after="2025-11-20"
-php artisan queue:failed --before="2025-11-21"
-php artisan queue:failed --after=yesterday --before=today
-
-# Filter by job class (partial match)
-php artisan queue:failed --class=SendEmail
-
-# Limit results
-php artisan queue:failed --limit=50
-
-# Combine multiple filters
-php artisan queue:failed --queue=emails --after=yesterday --limit=10 --json
-```
-
-### JSON Output Format
-
-```json
-{
-  "failed_jobs": [
-    {
-      "id": "1234",
-      "uuid": "550e8400-e29b-41d4-a716-446655440000",
-      "connection": "redis",
-      "queue": "emails",
-      "payload": {
-        "displayName": "App\\Jobs\\SendEmail",
-        "job": "Illuminate\\Queue\\CallQueuedHandler@call",
-        "data": {}
-      },
-      "exception": "Connection timeout...",
-      "failed_at": "2025-11-21 10:30:00"
-    }
-  ],
-  "count": 1
-}
-```
 
 ## Remote Retry
 
