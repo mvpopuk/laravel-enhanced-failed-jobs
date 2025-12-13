@@ -1,6 +1,3 @@
-<img width="2412" height="1654" alt="CleanShot 2025-12-10 at 14 53 13@2x" src="https://github.com/user-attachments/assets/73bbe659-b924-459a-8c6d-9325cc3bdf82" />
-
-
 # Queuewatch Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/queuewatch/laravel.svg?style=flat-square)](https://packagist.org/packages/queuewatch/laravel)
